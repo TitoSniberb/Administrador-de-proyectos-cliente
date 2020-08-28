@@ -9,3 +9,5 @@ export const ELIMINAR_PROYECTO = 'ELIMINAR_PROYECTO';
 // Types para taea
 export const OBTENER_TAREAS = 'OBTENER_TAREAS';
 export const AGREGAR_TAREA = 'AGREGAR_TAREA';
+export const VALIDAR_TAREA = 'VALIDAR_TAREA';
+export const ELIMINAR_TAREA = 'ELIMINAR_TAREA';

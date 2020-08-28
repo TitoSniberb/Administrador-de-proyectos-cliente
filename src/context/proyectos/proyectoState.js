@@ -23,7 +23,7 @@ const ProyectoState = props => {
     const initialState = {
         proyectos: [],
         formulario: false,
-        errorFormulario: false,
+        errorformulario: false,
         proyecto: null
     }
  
@@ -83,7 +83,7 @@ const ProyectoState = props => {
             value={{
                 proyectos: state.proyectos,
                 formulario: state.formulario,
-                errorFormulario: state.errorFormulario,
+                errorformulario: state.errorformulario,
                 proyecto: state.proyecto,
                 mostrarFormulario,
                 obtenerProyectos,

@@ -1,16 +1,17 @@
 import React, { useContext, useState } from 'react';
 import proyectoContext from '../../context/proyectos/proyectoContext';
+import tareaContext from '../../context/tareas/tareaContext';
 
 const FormTarea = () => {
 
-    // Extraer proyectos de state inicial
+    // Extraer context necesario
     const proyectosContext = useContext(proyectoContext);
-    const { proyecto, agregarTarea } = proyectosContext;
+    const { proyecto } = proyectosContext;
+    const tareasContext = useContext(tareaContext)
+    const { agregarTarea, mostrarError, obtenerTareas, errortarea } = tareasContext;
 
     const [ tarea, setTarea ] = useState({
         nombre: '',
-        estado: false,
-        proyectoId: null
     });
 
     const { nombre } = tarea;
@@ -18,14 +19,14 @@ const FormTarea = () => {
     if(!proyecto) return null;
  
     // Extraer proyecto actual
-    const proyectoActual = proyecto;
+    const [ proyectoActual ] = proyecto;
 
     // Crear tarea nueva
     const onChangeTarea = e => {
         setTarea({
             [e.target.name]: e.target.value,
             estado: false,
-            proyectoId: proyectoActual[0].id
+            proyectoId: proyectoActual.id
         })
     }
 
@@ -35,10 +36,17 @@ const FormTarea = () => {
 
         // Validamos
         if (nombre.trim() === '') {
+            mostrarError(true);
             return;
         }
 
-        agregarTarea(tarea)
+        agregarTarea(tarea);
+        // Reiniciamos formulario
+        setTarea({
+            nombre: ''
+        });
+        // Obtener nuevas tareas
+        obtenerTareas(proyectoActual.id);
     }
 
     return ( 
@@ -67,8 +75,9 @@ const FormTarea = () => {
                         value="Agregar tarea"
                     />
                 </div>
-
             </form>
+            { errortarea ? <p className="mensaje error">El nombre de la tarea es obligatorio</p> 
+            : null}
         </div>
         
      );

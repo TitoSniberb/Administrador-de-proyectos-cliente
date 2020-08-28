@@ -27,13 +27,13 @@ export default (state, action) => {
                 ...state,
                 proyectos: [...state.proyectos, action.payload],
                 formulario: false,
-                errorFormulario: false
+                errorformulario: false
             }
         
         case VALIDAR_FORMULARIO:
             return {
                 ...state,
-                errorFormulario: true
+                errorformulario: true
             }
 
         case PROYECTO_ACTUAL:

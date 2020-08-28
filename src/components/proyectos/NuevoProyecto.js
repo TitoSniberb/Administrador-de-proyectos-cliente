@@ -6,7 +6,7 @@ const NuevoProyecto = () => {
     const proyectosContext = useContext(proyectoContext);
     const { 
         formulario, 
-        errorFormulario, 
+        errorformulario, 
         mostrarFormulario, 
         agregarProyecto, 
         mostrarError 
@@ -79,7 +79,7 @@ const NuevoProyecto = () => {
                 : null 
             }
 
-            { errorFormulario ? <p className="mensaje error">El nombre del proyecto es obligatorio</p> : null}
+            { errorformulario ? <p className="mensaje error">El nombre del proyecto es obligatorio</p> : null}
 
         </Fragment>
      );
