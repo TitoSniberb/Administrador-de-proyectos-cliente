@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import proyectoContext from '../../context/proyectos/proyectoContext';
 import tareaContext from '../../context/tareas/tareaContext';
 
@@ -7,26 +7,47 @@ const FormTarea = () => {
     // Extraer context necesario
     const proyectosContext = useContext(proyectoContext);
     const { proyecto } = proyectosContext;
+    
+    // Context tarea
     const tareasContext = useContext(tareaContext)
-    const { agregarTarea, mostrarError, obtenerTareas, errortarea } = tareasContext;
+    const { 
+        agregarTarea, 
+        mostrarError, 
+        obtenerTareas,
+        actualizarTarea, 
+        errortarea, 
+        tareaseleccionada } = tareasContext;
+    
+    // Effect que detecta si hay una tarea seleccionada
+    useEffect(() => {
+        if( tareaseleccionada !== null) {
+            setTarea(tareaseleccionada)
+        } else {
+            setTarea({
+                nombre: ''
+            })
+        }
+    }, [tareaseleccionada]);
 
+    // State del formulario
     const [ tarea, setTarea ] = useState({
         nombre: '',
     });
-
+    
+    // Extraer el nombre del proyecto
     const { nombre } = tarea;
-
+    
+    // Si no hay ningun proyecto seleccionado
     if(!proyecto) return null;
  
-    // Extraer proyecto actual
+    // Extraer proyecto actual con array destructuring
     const [ proyectoActual ] = proyecto;
 
     // Crear tarea nueva
     const onChangeTarea = e => {
         setTarea({
-            [e.target.name]: e.target.value,
-            estado: false,
-            proyectoId: proyectoActual.id
+            ...tarea,
+            [e.target.name]: e.target.value
         })
     }
 
@@ -36,17 +57,24 @@ const FormTarea = () => {
 
         // Validamos
         if (nombre.trim() === '') {
-            mostrarError(true);
+            mostrarError();
             return;
         }
 
-        agregarTarea(tarea);
+        // Es una tarea nueva o estas editando?
+        if (tareaseleccionada === null) {
+            tarea.proyecto = proyectoActual.id
+            agregarTarea(tarea); 
+        }
+        else actualizarTarea(tarea);
+
+        obtenerTareas(proyectoActual.id);
+
         // Reiniciamos formulario
         setTarea({
             nombre: ''
         });
-        // Obtener nuevas tareas
-        obtenerTareas(proyectoActual.id);
+        
     }
 
     return ( 
@@ -72,7 +100,7 @@ const FormTarea = () => {
                         type="submit"
                         className="btn btn-primario btn-submit btn-block"
                         placeholder="Nombre de la tarea"
-                        value="Agregar tarea"
+                        value={tareaseleccionada ? 'Editar tarea' : "Agregar tarea"}
                     />
                 </div>
             </form>

@@ -1,11 +1,15 @@
 import React, { useReducer } from 'react';
 import TareaContext from './tareaContext';
 import TareaReducer from './tareaReducer';
+import { v4 as uuidv4 } from 'uuid';
 import { 
     OBTENER_TAREAS, 
     AGREGAR_TAREA,
     VALIDAR_TAREA,
-    ELIMINAR_TAREA
+    ELIMINAR_TAREA,
+    ESTADO_TAREA,
+    TAREA_ACTUAL,
+    ACTUALIZAR_TAREA
 } from '../../types/index';
 
 const TareaState = props => {
@@ -19,7 +23,8 @@ const TareaState = props => {
             { id: 6, nombre: 'Pegarse dos tiros', estado: false, proyectoId: 1 },
         ],
         tareasproyecto: null,
-        errortarea: false
+        errortarea: false,
+        tareaseleccionada: null
     }
 
     const [ state, dispatch ] = useReducer(TareaReducer, initialState);
@@ -34,6 +39,7 @@ const TareaState = props => {
 
     // Agregar tareas a un proyecto
     const agregarTarea = tarea => {
+        tarea.id = uuidv4();
         dispatch({
             type: AGREGAR_TAREA,
             payload: tarea
@@ -55,15 +61,43 @@ const TareaState = props => {
         })
     }
 
+    // Cambiar estado tarea
+    const cambiarEstadoTarea = tarea => {
+        dispatch({
+            type: ESTADO_TAREA,
+            payload: tarea
+        })
+    }
+
+    // Extrae tarea para editarla
+    const setTareaActual = tarea => {
+        dispatch({
+            type: TAREA_ACTUAL,
+            payload: tarea
+        })
+    }
+
+    // Modificar tarea
+    const actualizarTarea = tarea => {
+        dispatch({
+            type: ACTUALIZAR_TAREA,
+            payload: tarea
+        })
+    }
+
     return (
         <TareaContext.Provider
             value={{
                 tareas: state.tareas,
                 tareasproyecto: state.tareasproyecto,
                 errortarea: state.errortarea,
+                tareaseleccionada: state.tareaseleccionada,
                 obtenerTareas,
                 agregarTarea,
                 eliminarTarea,
+                cambiarEstadoTarea,
+                setTareaActual,
+                actualizarTarea,
                 mostrarError
             }}
         >
