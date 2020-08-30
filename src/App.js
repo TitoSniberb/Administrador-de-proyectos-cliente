@@ -5,20 +5,29 @@ import Register from './components/auth/Register';
 import Proyectos from './components/proyectos/Proyectos';
 import ProyectoState from './context/proyectos/proyectoState';
 import TareaState from './context/tareas/tareaState';
+import AlertaState from './context/alertas/alertaState';
+import AuthState from './context/autenticacion/authState';
 
 function App() {
+
+  console.log(process.env.REACT_APP_BACKEND_URL);
+
   return (
     <ProyectoState>
       <TareaState>
-        <Router>
+        <AlertaState>
+          <AuthState>
+            <Router>
 
-          <Switch>
-            <Route exact path="/" component={Login} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/proyectos" component={Proyectos} />
-          </Switch>
+              <Switch>
+                <Route exact path="/" component={Login} />
+                <Route exact path="/register" component={Register} />
+                <Route exact path="/proyectos" component={Proyectos} />
+              </Switch>
 
-        </Router>
+            </Router>
+          </AuthState>
+        </AlertaState>
       </TareaState>
     </ProyectoState>
   );
